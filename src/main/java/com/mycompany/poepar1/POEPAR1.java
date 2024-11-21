@@ -12,6 +12,7 @@ public class POEPAR1 {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         Login login = new Login();
+        Part3Task second = new Part3Task();
         
         System.out.println("1. Login");
         System.out.println("2. Exit");
@@ -70,7 +71,7 @@ public class POEPAR1 {
 
         // Main task management loop
         while (true) {
-            String choiceStr = JOptionPane.showInputDialog("1) Add tasks\n2) Show report\n3) Quit\nChoose an option:");
+            String choiceStr = JOptionPane.showInputDialog("1) Add tasks\n2) Show report\n3) Developer name\n4) Completed Tasks\n5) Longest Task\n6) Task Name\n7) Delete Task\n8) Quit\n Choose an option:");
             int secondChoice;
 
             try {
@@ -85,11 +86,28 @@ public class POEPAR1 {
                     addTasks(dialog);
                     break;
                 case 2:
-                    JOptionPane.showMessageDialog(dialog, "Coming Soon");
-                    break;
+                   second.displayFullReport();
+                   break;
                 case 3:
+                    String developername = JOptionPane.showInputDialog("Enter Task by Developer name");
+                    second.searchTasksByDeveloper(developername);
+                case 4:
+                    second.displayCompletedTasks();
+                    break;
+                case 5:
+                    second.findLongestTask();
+                    break;
+                case 6:
+                    String TaskName = JOptionPane.showInputDialog("Enter Task by Name");
+                    second.searchTaskByName(TaskName);
+                    break;
+                case 7:
+                    String deleteTask = JOptionPane.showInputDialog("Enter delete task");
+                    second.deleteTask(deleteTask);
+                    break;
+                case 8:
                     JOptionPane.showMessageDialog(dialog, "Goodbye!");
-                    System.exit(0);
+                    System.exit(0);                   
                 default:
                     JOptionPane.showMessageDialog(dialog, "Invalid option. Please try again.");
             }
