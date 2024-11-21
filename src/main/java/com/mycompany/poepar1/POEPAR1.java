@@ -1,88 +1,83 @@
-package com.mycompany.poepar1;
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ */
 
+package com.mycompany.poepar1;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 import java.util.Scanner;
 import javax.swing.JDialog;
-import javax.swing.JOptionPane;
-
+/**
+ *
+ * @author RC_Student_lab
+ */
 public class POEPAR1 {
     private static ArrayList<Task> tasks = new ArrayList<>();
     private static int totalHours = 0;
 
     public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        Login login = new Login();
+        //Declarations
+         Scanner sc = new Scanner(System.in);
+        Login login = null;
+
         
-        System.out.println("1. Login");
-        System.out.println("2. Exit");
-        System.out.print("Choose an option: ");
-        int choice = sc.nextInt();
-        sc.nextLine(); // Consume newline
+            System.out.println("\n1. Register");
+            System.out.println("2. Login");
+            System.out.println("3. Exit");
+            System.out.print("Choose an option: ");
+            int choice = sc.nextInt();
+            sc.nextLine(); // Consume newline
 
-        switch (choice) {
-            case 1:
-                // User registration
-                System.out.print("Enter username: ");
-                String username = sc.nextLine();
-                System.out.print("Enter password: ");
-                String password = sc.nextLine();
-                System.out.print("Enter first name: ");
-                String firstName = sc.nextLine();
-                System.out.print("Enter last name: ");
-                String lastName = sc.nextLine();
-                 
-                
-                String registrationResult = login.registerUser(username, password, firstName, lastName);
-                System.out.println(registrationResult);
+            switch (choice) {
+                case 1:
+                    System.out.print("Enter username: ");
+                    String username = sc.nextLine();
+                    System.out.print("Enter password: ");
+                    String password = sc.nextLine();
+                    System.out.print("Enter first name: ");
+                    String firstName = sc.nextLine();
+                    System.out.print("Enter last name: ");
+                    String lastName = sc.nextLine();
 
-               
-                    System.out.print("Enter username to Login: ");
-                    String loginUsername = sc.nextLine();
+                    login = new Login(username, password, firstName, lastName);
+                    String registrationResult = login.registerUser();
+                    System.out.println(registrationResult);
+                    break;
                     
+                case 2:
+                    if (login == null) {
+                        System.out.println("Please register first.");
+                        break;
+                    }
+                    System.out.print("Enter username: ");
+                    String loginUsername = sc.nextLine();
                     System.out.print("Enter password: ");
                     String loginPassword = sc.nextLine();
-                    
-                    boolean loginCheck = login.loginUser(loginUsername, loginPassword);
-                    String loginResult = login.returnLoginStatus(loginCheck);
-                    System.out.println(loginResult);
-                
-                break;
-               
-            case 2:
-                System.out.println("Goodbye!");
-                System.exit(0);
-                break;
-            default:
-                System.out.println("Invalid option. Please try again.");
-                return; // Exit if invalid
-        }
-          sc.close();
-          
-        //Part Two
-        boolean loginCheck = login.loginUser(login.username, login.password);
-        if (loginCheck) {
-              
-        }
-        // Welcome dialog
-        final JDialog dialog = new JDialog(); 
-        dialog.setAlwaysOnTop(true);
-         JOptionPane.showMessageDialog(dialog, "Welcome to EasyKanban");
 
-        // Main task management loop
+                    String loginResult = login.returnLoginStatus(loginUsername, loginPassword);
+                    System.out.println(loginResult);
+                    break;
+
+                case 3:
+                    System.out.println("Goodbye!");
+                    System.exit(0);
+
+                default:
+                    System.out.println("Invalid option. Please try again.");
+            }
+        sc.close();
+    
+       final JDialog dialog = new JDialog(); 
+                 dialog.setAlwaysOnTop(true);
+       JOptionPane.showMessageDialog(dialog, "Welcome to EasyKanban");
+
         while (true) {
             String choiceStr = JOptionPane.showInputDialog("1) Add tasks\n2) Show report\n3) Quit\nChoose an option:");
-            int secondChoice;
-
-            try {
-                secondChoice = Integer.parseInt(choiceStr);
-            } catch (NumberFormatException e) {
-                JOptionPane.showMessageDialog(dialog, "Invalid input. Please enter a number.");
-                continue;
-            }
-
-            switch (secondChoice) {
+            int secondchoice = Integer.parseInt(choiceStr);
+                    
+            switch (secondchoice) {
                 case 1:
-                    addTasks(dialog);
+                    addTasks();
                     break;
                 case 2:
                     JOptionPane.showMessageDialog(dialog, "Coming Soon");
@@ -96,16 +91,11 @@ public class POEPAR1 {
         }
     }
 
-    public static void addTasks(JDialog dialog) {
+    private static void addTasks() {
         String numTasksStr = JOptionPane.showInputDialog("How many tasks do you want to add?");
-        int numTasks;
-
-        try {
-            numTasks = Integer.parseInt(numTasksStr);
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(dialog, "Invalid number of tasks.");
-            return;
-        }
+        final JDialog dialog = new JDialog(); 
+                 dialog.setAlwaysOnTop(true);
+        int numTasks = Integer.parseInt(numTasksStr);
 
         for (int i = 0; i < numTasks; i++) {
             String taskName = JOptionPane.showInputDialog("Entering details for Task " + (i + 1) + "\nTask Name:");
@@ -123,14 +113,7 @@ public class POEPAR1 {
 
             String developerDetails = JOptionPane.showInputDialog("Developer Details (First and Last Name):");
             String taskDurationStr = JOptionPane.showInputDialog("Task Duration (in hours):");
-            int taskDuration;
-
-            try {
-                taskDuration = Integer.parseInt(taskDurationStr);
-            } catch (NumberFormatException e) {
-                JOptionPane.showMessageDialog(dialog, "Invalid duration. Please enter a number.");
-                return;
-            }
+            int taskDuration = Integer.parseInt(taskDurationStr);
 
             String statusChoiceStr = JOptionPane.showInputDialog("Task Status:\n1) To Do\n2) Done\n3) Doing\nChoose a status:");
             int statusChoice = Integer.parseInt(statusChoiceStr);
@@ -158,5 +141,9 @@ public class POEPAR1 {
         }
 
         JOptionPane.showMessageDialog(dialog, "Total hours for all tasks: " + totalHours);
+    }
+
+    public static int returnTotalHours() {
+        return totalHours;
     }
 }
